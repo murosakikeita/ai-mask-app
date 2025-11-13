@@ -11,10 +11,64 @@ import json
 import tempfile
 import zipfile
 from PIL import Image, ImageDraw
-from google.cloud import vision
-from openai import OpenAI
-from pdf2image import convert_from_bytes
-import numpy as np
+import os
+import io
+import json
+import base64
+import requests
+from PIL import Image, ImageDraw
+
+# -----------------------------
+# Google Cloud Vision API (REST版)
+# -----------------------------
+def get_vision_words(image_bytes):
+    api_key = os.getenv("GOOGLE_API_KEY") or st.secrets.get("GOOGLE_API_KEY")
+    if not api_key:
+        st.error("❌ GOOGLE_API_KEY が設定されていません。Streamlit Secrets に追加してください。")
+        return [], ""
+
+    try:
+        image_base64 = base64.b64encode(image_bytes).decode("utf-8")
+        endpoint = f"https://vision.googleapis.com/v1/images:annotate?key={api_key}"
+
+        request_body = {
+            "requests": [
+                {
+                    "image": {"content": image_base64},
+                    "features": [{"type": "DOCUMENT_TEXT_DETECTION"}],
+                }
+            ]
+        }
+
+        response = requests.post(endpoint, json=request_body)
+        result = response.json()
+
+        if "error" in result:
+            st.error(f"❌ Vision API Error: {result['error'].get('message')}")
+            return [], ""
+
+        words = []
+        text_annotation = result["responses"][0].get("fullTextAnnotation", {})
+        full_text = text_annotation.get("text", "")
+
+        for page in text_annotation.get("pages", []):
+            for block in page.get("blocks", []):
+                for para in block.get("paragraphs", []):
+                    for word in para.get("words", []):
+                        text = "".join([s["text"] for s in word.get("symbols", [])]).strip()
+                        if not text:
+                            continue
+                        v = word.get("boundingBox", {}).get("vertices", [])
+                        if len(v) >= 4:
+                            x1, y1 = v[0].get("x", 0), v[0].get("y", 0)
+                            x2, y2 = v[2].get("x", 0), v[2].get("y", 0)
+                            words.append({"text": text, "bbox": (x1, y1, x2, y2)})
+
+        return words, full_text
+
+    except Exception as e:
+        st.error(f"❌ Vision API 呼び出しエラー: {e}")
+        return [], ""
 
 # ==============================================
 # UI設定
