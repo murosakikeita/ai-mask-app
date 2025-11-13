@@ -102,7 +102,6 @@ try:
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 except Exception as e:
     st.error(f"❌ OpenAI クライアント初期化に失敗しました: {e}")
-
 def get_vision_client():
     try:
         return vision.ImageAnnotatorClient()
