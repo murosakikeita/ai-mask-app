@@ -1,6 +1,9 @@
+# Updated 2025-11-13
 streamlit
 pillow
 openai
 google-cloud-vision
+google-api-core
+google-auth
 pdf2image
 numpy
