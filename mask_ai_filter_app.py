@@ -3,22 +3,22 @@
 # PDF対応版・UI付き
 # ==============================================
 
+# ==============================================
+# AIマスキングアプリ（Vision API REST + GPT-4o-mini）
+# ==============================================
 import streamlit as st
 import os
 import io
 import re
 import json
+import base64
 import tempfile
 import zipfile
-from PIL import Image, ImageDraw
-from openai import OpenAI  # ←★これを必ず追加！
-
-import os
-import io
-import json
-import base64
 import requests
+import numpy as np
 from PIL import Image, ImageDraw
+from openai import OpenAI
+
 
 # -----------------------------
 # Google Cloud Vision API (REST版)
@@ -95,7 +95,7 @@ st.markdown("""
 このアプリは **AI＋OCRハイブリッド構成** により、極めて高精度に個人情報を検出しマスキングします。
 """)
 
-# ==============================================
+# =============================================
 # API クライアント設定
 # ==============================================
 try:
