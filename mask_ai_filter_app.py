@@ -11,6 +11,8 @@ import json
 import tempfile
 import zipfile
 from PIL import Image, ImageDraw
+from openai import OpenAI  # ←★これを必ず追加！
+
 import os
 import io
 import json
