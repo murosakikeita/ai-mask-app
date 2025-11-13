@@ -1,0 +1,6 @@
+streamlit
+pillow
+openai
+google-cloud-vision
+pdf2image
+numpy
