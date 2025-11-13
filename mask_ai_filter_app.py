@@ -7,17 +7,10 @@
 # AIマスキングアプリ（Vision API REST + GPT-4o-mini）
 # ==============================================
 import streamlit as st
-import os
-import io
-import re
-import json
-import base64
-import tempfile
-import zipfile
-import requests
-import numpy as np
+import os, io, re, json, base64, tempfile, zipfile, requests, numpy as np
 from PIL import Image, ImageDraw
 from openai import OpenAI
+
 
 
 # -----------------------------

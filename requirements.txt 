@@ -1,7 +1,7 @@
-# Updated 2025-11-13 (force rebuild)
+# Updated 2025-11-13 (force rebuild v2)
 streamlit
 pillow
-openai==1.13.3
+openai==1.14.3
 requests
 google-api-core
 google-auth
