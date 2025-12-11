@@ -1,9 +1,8 @@
-# Updated 2025-11-13 (force rebuild v2)
 streamlit
 pillow
-openai==1.14.3
 requests
-google-api-core
-google-auth
-pdf2image
 numpy
+pdf2image
+
+# rebuild trigger
+v2025-11-13-REST
